@@ -33,3 +33,12 @@ Para compilar y ejecutar el programa:
 
 ```bash
 g++ -o inferencia main.cc
+./inferencia #para ejecutar el programa
+```
+
+tambien puede usar el comando `make` para compilar:
+
+```bash
+make
+./inferencia
+```
