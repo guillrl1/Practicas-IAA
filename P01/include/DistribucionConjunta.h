@@ -6,6 +6,11 @@
 #include <string>
 #include <map>
 #include <cmath>
+#include <iostream>
+#include <fstream>
+#include <regex>
+#include <algorithm>
+#include <cstdint>
 
 class DistribucionConjunta {
 public:
@@ -21,6 +26,8 @@ public:
     double get_prob(int k) const { return probabilidades[k]; }
     void mostrarDistribucion() const;
     bool validarSuma() const;
+
+    double* prob_cond_bin(double *p, int N, uint32_t maskC, int valC, uint32_t maskI);
 
 private:
     int N; 
