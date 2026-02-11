@@ -33,12 +33,17 @@ Para compilar y ejecutar el programa:
 
 ```bash
 g++ -o inferencia main.cc
-./inferencia #para ejecutar el programa
+./bin/inferencia #para ejecutar el programa
 ```
 
 tambien puede usar el comando `make` para compilar:
 
 ```bash
 make
-./inferencia
+./bin/inferencia
+```
+
+Si quiere ejecutar con variables aleatorias, ejecute el programa e indique el numero de variables N que desea
+```bash
+./bin/inferencia 4 # Por defecto el programa usara un N = 3 si no detecta ni numero de variables ni archivo
 ```
