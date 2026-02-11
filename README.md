@@ -29,15 +29,20 @@ El programa permite trabajar con distribuciones de probabilidad multivariables r
     * **Marginalización:** Eliminación automática de las variables no seleccionadas.
 
 ### Ejecución
-Para poder compilar el programa, ha de ejecutar en la terminal:
+
+```bash
+g++ -o inferencia main.cc
+./bin/inferencia #para ejecutar el programa
+```
+
+tambien puede usar el comando `make` para compilar:
+
 ```bash
 make
+./bin/inferencia
 ```
 
-Para ejecutar el programa ha de ejecutar en la terminal:
+Si quiere ejecutar con variables aleatorias, ejecute el programa e indique el numero de variables N que desea
 ```bash
-make run
+./bin/inferencia 4 # Por defecto el programa usara un N = 3 si no detecta ni numero de variables ni archivo
 ```
-
-Esto ejecutará una simulacion de un benchmark.exe, usado para medir tiempos de ejecución.
-
