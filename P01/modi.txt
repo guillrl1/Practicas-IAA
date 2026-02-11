@@ -1,0 +1,2 @@
+P (H | E) esto es lo que tenemos
+Modificación: queremos que funcione sin evidencia (P(H)) que sea capaz de calcular marginales.

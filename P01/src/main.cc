@@ -34,7 +34,8 @@ int main(int argc, char* argv[]) {
 
     std::cout << "\n--- Seleccion de Variables (Indices 1 a " << n_vars << ") ---" << std::endl;
     
-    std::cout << "Variables Condicionadas (XC). Introduce 'posicion valor' (ej: 2 1), o -1 para terminar: ";
+    // XC - Si no se introduce nada, se calcula la Marginal
+    std::cout << "Variables Condicionadas (XC). Introduce 'posicion valor' (ej: 2 1), o -1 para terminar. Puede poner -1 para saltar (Marginal): ";
     while (std::cin >> pos && pos != -1) {
         if (pos < 1 || pos > n_vars) {
             std::cout << "Posicion invalida.\n";
