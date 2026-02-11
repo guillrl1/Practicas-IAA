@@ -1,30 +1,54 @@
-# Variables de compilación
-CXX = g++
-CXXFLAGS = -std=c++17 -Iinclude -Wall
-SRC_DIR = src
-OBJ_DIR = obj
-BIN_DIR = bin
+# --- Configuración ---
+CXX      = g++
+CXXFLAGS = -std=c++17 -O3 -Iinclude
 
-# Archivos
-SOURCES = $(wildcard $(SRC_DIR)/*.cc)
-OBJECTS = $(patsubst $(SRC_DIR)/%.cc, $(OBJ_DIR)/%.o, $(SOURCES))
-TARGET = $(BIN_DIR)/inferencia
+# --- Directorios ---
+SRC_DIR  = src
+INC_DIR  = include
+TEST_DIR = test
+BIN_DIR  = bin
 
-# Regla por defecto
-all: $(TARGET)
+# --- Archivos Fuente ---
+# La lógica de la clase que comparten ambos
+LIB_SRC   = $(SRC_DIR)/DistribucionConjunta.cc
 
-# Crear el ejecutable
-$(TARGET): $(OBJECTS)
-	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# Los puntos de entrada de cada programa
+MAIN_SRC  = $(SRC_DIR)/main.cc
+BENCH_SRC = $(TEST_DIR)/benchmark.cc
 
-# Compilar archivos objeto
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc
-	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+# --- Ejecutables ---
+TARGET_MAIN  = $(BIN_DIR)/programa_principal
+TARGET_BENCH = $(BIN_DIR)/benchmark_exe
 
-# Limpiar archivos temporales
+# --- Reglas ---
+
+# Por defecto compila ambos
+all: $(BIN_DIR) $(TARGET_MAIN) $(TARGET_BENCH)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+# Regla para el programa principal
+main: $(BIN_DIR) $(TARGET_MAIN)
+
+$(TARGET_MAIN): $(LIB_SRC) $(MAIN_SRC)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+# Regla para el benchmark
+benchmark: $(BIN_DIR) $(TARGET_BENCH)
+
+$(TARGET_BENCH): $(LIB_SRC) $(BENCH_SRC)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+# Ejecutar el main
+run: main
+	./$(TARGET_MAIN)
+
+# Ejecutar el benchmark
+run_bench: benchmark
+	./$(TARGET_BENCH)
+
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -rf $(BIN_DIR) benchmark_resultados.csv
 
-.PHONY: all clean
+.PHONY: all clean run run_bench main benchmark
