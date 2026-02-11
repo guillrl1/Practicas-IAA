@@ -36,6 +36,7 @@ int main(int argc, char* argv[]) {
     
     // XC - Si no se introduce nada, se calcula la Marginal
     std::cout << "Variables Condicionadas (XC). Introduce 'posicion valor' (ej: 2 1), o -1 para terminar. Puede poner -1 para saltar (Marginal): ";
+    bool flag_marginal = true;
     while (std::cin >> pos && pos != -1) {
         if (pos < 1 || pos > n_vars) {
             std::cout << "Posicion invalida.\n";
@@ -46,8 +47,8 @@ int main(int argc, char* argv[]) {
         
         maskC |= (1 << (pos - 1)); 
         if (valor == 1) valC |= (1 << (pos - 1));
+        flag_marginal = false;
     }
-
     std::cout << "Variables de Interes (XI). Introduce posiciones (ej: 1 3), o -1 para terminar: ";
     while (std::cin >> pos && pos != -1) {
         if (pos < 1 || pos > n_vars) continue;
@@ -80,6 +81,8 @@ int main(int argc, char* argv[]) {
     std::chrono::duration<double> elapsed = end - start;
 
     // 6. Salida del resultado corregida
+    flag_marginal ? std::cout << "\n--- Resultado de P(XI) (Marginal) ---" << std::endl
+              :
     std::cout << "\n--- Resultado de P(XI | XC) ---" << std::endl;
     
     int tam_salida = 1 << num_interes;
@@ -90,10 +93,14 @@ int main(int argc, char* argv[]) {
         
         // Para XC, mostramos la configuración de valores que el usuario eligió
         // Filtramos valC con maskC para limpiar bits residuales
-        std::string bits_XC = std::bitset<32>(valC & maskC).to_string().substr(32 - n_vars);
-
-        std::cout << "P(XI=" << bits_XI << " | XC=" << bits_XC << ") = " 
-                  << std::fixed << std::setprecision(6) << resultado[i] << std::endl;
+        if (!flag_marginal) {
+            std::string bits_XC = std::bitset<32>(valC & maskC).to_string().substr(32 - n_vars);
+            std::cout << "P(XI=" << bits_XI << " | XC=" << bits_XC << ") = " 
+                      << std::fixed << std::setprecision(6) << resultado[i] << std::endl;
+        } else {
+            std::cout << "P(XI=" << bits_XI << ") = " 
+                      << std::fixed << std::setprecision(6) << resultado[i] << std::endl;
+        }
     }
 
     std::cout << "\nTiempo de calculo: " << elapsed.count() << " segundos.\n";
